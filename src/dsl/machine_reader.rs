@@ -31,6 +31,7 @@ impl<'a> MachineReader<'a> {
         // machine state map
         let mut map: HashMap<String, State> = HashMap::new();
         let mut default: Option<String> = None;
+        let mut final_state: Option<String> = None;
         for i in self.machine.iter() {
             // optional variables
             let mut wait_time: Option<u32> = None;
@@ -44,6 +45,11 @@ impl<'a> MachineReader<'a> {
             // decide if it's the default state
             if let Ok(true) = i.contains_key::<&str>("default") {
                 default = Some(name.clone())
+            }
+
+            // decide if it's the default state
+            if let Ok(true) = i.contains_key::<&str>("final") {
+                final_state = Some(name.clone())
             }
 
             //extract wait time if exists
@@ -87,6 +93,7 @@ impl<'a> MachineReader<'a> {
         Ok(AbstractMachine::new(
             "Machine",
             &(default.expect("no default state found")),
+            &(final_state.expect("no final state found")),
             map,
         ))
     }

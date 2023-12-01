@@ -1,7 +1,6 @@
 use std::env;
 
-
-use crate::stream::{multi_stream};
+use crate::stream::multi_stream;
 
 mod dsl;
 mod machine;

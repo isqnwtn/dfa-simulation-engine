@@ -1,8 +1,6 @@
 use crate::machine::PROB_GRAIN;
 use rand::prelude::*;
 
-
-
 #[derive(Debug, Clone)]
 pub struct TransferInfo {
     name: String,

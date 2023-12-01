@@ -13,5 +13,7 @@ pub trait StateMachine {
     fn init(&mut self);
     fn change(&mut self);
     fn eval(&self) -> Self::StateValue;
+    fn time(&self) -> u32;
+    fn done(&self) -> bool;
     fn reset(&mut self);
 }

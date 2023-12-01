@@ -20,5 +20,6 @@ MACHINE = {
   {
     name = "stopped",
     probs = {},
+    final = true,
   }
 }
