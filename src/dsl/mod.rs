@@ -6,7 +6,7 @@ use std::fs;
 use crate::machine::abstract_machine::DFA;
 use crate::stream::stream;
 
-pub fn test_reader(filepath: &'static str) -> Result<(), rlua::Error> {
+pub fn test_reader<'a>(filepath: &'a str, count:u32) -> Result<(), rlua::Error> {
     //reading the dsl file
     let dsl_string = fs::read_to_string(filepath).expect("couldn't read dsl file");
     //println!("{}", dsl_string);
@@ -17,7 +17,7 @@ pub fn test_reader(filepath: &'static str) -> Result<(), rlua::Error> {
     println!("states: {:#?}", machine);
     let mut dfa = DFA::new(machine);
 
-    stream(10, &mut dfa);
+    stream(count, &mut dfa);
 
     Ok(())
 }
