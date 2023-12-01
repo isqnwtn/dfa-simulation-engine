@@ -1,8 +1,6 @@
-use super::StateMachine;
-use std::{collections, default};
-use rand::prelude::*;
+use std::collections;
 
-static PROB_GRAIN: u32 = 10000;
+use super::PROB_GRAIN;
 
 #[derive(Debug)]
 pub struct AbstractMachine {
@@ -74,35 +72,3 @@ impl State {
     }
 }
 
-pub struct DFA {
-    machine: AbstractMachine,
-    current_state: String,
-    rng: ThreadRng,
-}
-
-impl DFA {
-    pub fn new(m: AbstractMachine) -> Self {
-        let default_state = m.get_default_state();
-        DFA { machine: m, current_state: default_state, rng: rand::thread_rng() }
-    }
-}
-
-impl StateMachine for DFA {
-    type StateValue = String;
-    fn init(&mut self) {
-        self.current_state = self.machine.get_default_state()
-    }
-    fn change(&mut self) {
-        let cur = self.machine.get_state(&self.current_state);
-        let p = self.rng.gen_range(1..=PROB_GRAIN);
-        if let Some(st) = cur.matching(p) {
-            self.current_state = st;
-        }
-    }
-    fn eval(&self) -> Self::StateValue {
-        self.current_state.clone()
-    }
-    fn reset(&mut self) {
-        self.current_state = self.machine.get_default_state()
-    }
-}

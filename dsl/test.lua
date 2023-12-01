@@ -6,7 +6,7 @@ MACHINE = {
   },
   {
     name = "playing",
-    probs = {inactive = 0.2,paused = 0.75, stopped= 0.05}
+    probs = {inactive = 0.2,paused = 0.7, stopped= 0.1}
   },
   {
     name = "paused",
