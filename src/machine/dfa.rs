@@ -45,6 +45,9 @@ impl<'a> StateMachine for DFA<'a> {
             self.current_time += cur.get_time_spent(&mut self.rng);
             let p = self.rng.gen_range(1..=PROB_GRAIN);
             if let Some(st) = cur.matching(p) {
+                if self.machine.is_final_state(&st) {
+                    self.done = true;
+                }
                 self.current_state = st;
             } else {
                 self.done = true;

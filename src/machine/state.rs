@@ -11,14 +11,13 @@ pub struct TransferInfo {
 
 #[derive(Debug, Clone)]
 pub struct State {
-    name: String,
     wait_time: u32,
     wait_spread: u32,
     probs: Vec<TransferInfo>,
 }
 
 impl State {
-    pub fn new(n: &str, v: &[(String, f64)], w: u32, w_spread: u32) -> Self {
+    pub fn new(_n: &str, v: &[(String, f64)], w: u32, w_spread: u32) -> Self {
         let mut stamp = 0;
         let transfer_vec = v
             .iter()
@@ -35,7 +34,6 @@ impl State {
             })
             .collect();
         State {
-            name: n.to_string(),
             wait_time: w,
             wait_spread: w_spread,
             probs: transfer_vec,

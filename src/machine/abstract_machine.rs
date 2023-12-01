@@ -26,4 +26,7 @@ impl AbstractMachine {
         let st = self.states.get(name).expect("unexpected state name");
         st.clone()
     }
+    pub fn is_final_state(&self, s: &str) -> bool {
+        self.final_state.as_str() == s
+    }
 }
