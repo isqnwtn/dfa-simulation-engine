@@ -1,6 +1,9 @@
 use std::env;
 
-use crate::stream::multi_stream;
+use crate::dsl::DSL;
+use crate::stream::globals;
+
+use self::stream::StreamEngine;
 
 mod dsl;
 mod machine;
@@ -10,22 +13,14 @@ fn main() -> Result<(), rlua::Error> {
     // parse arguments
     let args: Vec<String> = env::args().collect();
     let filename = args.get(1).unwrap();
-    let count = args
-        .get(2)
-        .unwrap_or(&String::from("20"))
-        .parse::<u32>()
-        .unwrap();
-    let dfa_count = args
-        .get(3)
-        .unwrap_or(&String::from("4"))
-        .parse::<usize>()
-        .unwrap();
 
     // read machine from dsl
-    let machine = dsl::read_machine(filename)?;
-    println!("states: {machine:#?}");
+    let dsl = DSL::new(filename);
+    let machine = dsl.read_machine()?;
+    let globals = dsl.read_globals()?;
+    let stream_engine = StreamEngine::new(globals,machine);
+    stream_engine.multi_stream();
 
     //running stream
-    multi_stream(dfa_count, count, machine);
     Ok(())
 }

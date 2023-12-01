@@ -1,10 +1,6 @@
-use std::collections::HashMap;
-
 use rlua::{Context, Error, Table};
+use crate::stream::globals::{self, Globals};
 
-use crate::machine::abstract_machine::AbstractMachine;
-use crate::machine::state::State;
-use crate::machine::{DEFAULT_STATE_WAITING_TIME, DEFAULT_WAIT_SPREAD};
 
 pub struct GlobalReader<'a> {
     global_table: Table<'a>,
@@ -12,7 +8,12 @@ pub struct GlobalReader<'a> {
 impl<'a> GlobalReader<'a> {
     pub fn new(lctx: &Context<'a>) -> Result<Self, Error> {
         let g = lctx.globals();
-        let m: Vec<Table> = g.get("GLOBAL").expect("Couldn't read GLOBAL");
+        let m: Table = g.get("GLOBAL").expect("Couldn't read GLOBAL");
         Ok(GlobalReader { global_table: m })
+    }
+    pub fn read_globals(&mut self) -> Result<globals::Globals, Error> {
+        let max_sessions = self.global_table.get::<&str,usize>("max_sessions")?;
+        let run_length = self.global_table.get::<&str,usize>("run_length")?;
+        Ok(Globals::new(max_sessions, run_length))
     }
 }
