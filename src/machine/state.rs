@@ -17,6 +17,7 @@ pub struct State {
 }
 
 impl State {
+    // TODO: remove unused _n
     pub fn new(_n: &str, v: &[(String, f64)], w: u32, w_spread: u32) -> Self {
         let mut stamp = 0;
         let transfer_vec = v

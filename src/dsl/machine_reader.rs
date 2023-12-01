@@ -16,17 +16,6 @@ impl<'a> MachineReader<'a> {
         Ok(MachineReader { machine: m })
     }
 
-    pub fn get_states(&mut self) -> Result<Vec<String>, Error> {
-        Ok(self
-            .machine
-            .iter()
-            .map(|t| -> String {
-                t.get::<&str, String>("name")
-                    .expect("couldn't read name of state")
-            })
-            .collect())
-    }
-
     pub fn read_machine(&mut self) -> Result<AbstractMachine, Error> {
         // machine state map
         let mut map: HashMap<String, State> = HashMap::new();

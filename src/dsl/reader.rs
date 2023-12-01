@@ -16,13 +16,6 @@ impl Reader {
             dsl: String::from(dsl_str),
         }
     }
-    pub fn get_states(&mut self) -> Result<Vec<String>, Error> {
-        self.lua.context(|lctx| {
-            lctx.load(&self.dsl).set_name("dsl")?.exec()?;
-            let mut mr = MachineReader::new(&lctx)?;
-            mr.get_states()
-        })
-    }
     pub fn read_machine(&mut self) -> Result<AbstractMachine, Error> {
         self.lua.context(|lctx| {
             lctx.load(&self.dsl).set_name("dsl")?.exec()?;

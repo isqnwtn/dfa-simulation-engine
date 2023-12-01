@@ -1,4 +1,5 @@
 pub mod machine_reader;
+pub mod global_reader;
 pub mod reader;
 
 use std::fs;

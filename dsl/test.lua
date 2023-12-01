@@ -1,3 +1,16 @@
+GLOBAL = {
+  max_sessions = 10,
+  session_manager = function (t)
+   if 0 < t < 1000 then
+      return {session_count = 2}
+   elseif 1000 < t < 2000 then
+      return {session_count = 5}
+    else
+      return {session_count = 1}
+   end
+  end
+}
+
 MACHINE = {
   {
     name = "inactive",
