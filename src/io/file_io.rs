@@ -8,6 +8,26 @@ pub struct FileWriter{
 }
 
 impl FileWriter {
+
+    pub fn new(file_path: &str, truncate_existing: bool) -> io::Result<FileWriter> {
+        if truncate_existing {
+            // Truncate the file if it already exists
+            FileWriter::open_file_truncate(file_path)?;
+        }
+
+        Ok(FileWriter {
+            file_path: file_path.to_string(),
+        })
+    }
+
+    fn open_file_truncate(file_path: &str) -> io::Result<File> {
+        OpenOptions::new()
+            .create(true)
+            .truncate(true) // Truncate the file if it already exists
+            .write(true)    // Open the file in write mode
+            .open(file_path)
+    }
+
     fn open_file_append(file_path: &str) -> io::Result<File> {
         OpenOptions::new()
             .create(true)
