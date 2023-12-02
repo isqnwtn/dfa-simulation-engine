@@ -7,7 +7,6 @@ use crate::machine::StateMachine;
 use priority_queue::double_priority_queue;
 
 use crate::io::file_io::FileWriter;
-use self::globals::Globals;
 use self::globals::{Globals, GlobalState};
 
 
