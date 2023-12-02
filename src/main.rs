@@ -1,8 +1,6 @@
 use std::env;
 
 use crate::dsl::DSL;
-use crate::stream::globals;
-
 use self::stream::StreamEngine;
 
 mod dsl;
@@ -19,7 +17,8 @@ fn main() -> Result<(), rlua::Error> {
     let dsl = DSL::new(filename);
     let machine = dsl.read_machine()?;
     let globals = dsl.read_globals()?;
-    let stream_engine = StreamEngine::new(globals,machine);
+    let global_state = dsl.create_global_state()?;
+    let mut stream_engine = StreamEngine::new(globals,global_state,machine);
     stream_engine.multi_stream();
 
     //running stream

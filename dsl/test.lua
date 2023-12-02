@@ -1,15 +1,18 @@
+-- First test example for simulating a video player
+
+function SESSION_MANAGER(t)
+  if 0 < t and t < 1000 then
+      return 2
+   elseif 1000 < t and t < 2000 then
+      return 5
+    else
+      return 1
+   end
+end
+
 GLOBAL = {
   max_sessions = 3,
-  run_length = 20,
-  session_manager = function (t)
-   if 0 < t < 1000 then
-      return {session_count = 2}
-   elseif 1000 < t < 2000 then
-      return {session_count = 5}
-    else
-      return {session_count = 1}
-   end
-  end
+  run_length = 60,
 }
 
 MACHINE = {

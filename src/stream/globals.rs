@@ -1,4 +1,4 @@
-use rlua::Function;
+use rlua::{Function, Lua, Error, Table};
 
 pub struct Globals{
     pub max_sessions: usize,
@@ -14,6 +14,20 @@ impl Globals{
     }
 }
 
-pub struct GlobalState<'a> {
-    session_manager: Function<'a>,
+pub struct GlobalState {
+    state_lua: Lua
+}
+
+impl GlobalState {
+    pub fn new(l:Lua) -> Self {
+        GlobalState { state_lua: l }
+    }
+    pub fn run_session_manager(&mut self,cur_time:u32) -> Result<usize,Error> {
+        self.state_lua.context(|lctx|{
+            let globals = lctx.globals();
+            let session_manager: Function = globals.get::<&str,Function<'_>>("SESSION_MANAGER")?;
+            let new_session_count = session_manager.call::<i32,i32>(cur_time as i32)?;
+            Ok(new_session_count as usize)
+        })
+    }
 }
