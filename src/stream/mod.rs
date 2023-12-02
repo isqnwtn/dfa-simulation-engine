@@ -4,7 +4,7 @@ use crate::machine::abstract_machine::AbstractMachine;
 use crate::machine::dfa::DFA;
 use crate::machine::StateMachine;
 use priority_queue::double_priority_queue;
-
+use crate::io::file_io::FileWriter;
 use self::globals::Globals;
 
 pub struct StreamEngine {
@@ -18,7 +18,9 @@ impl StreamEngine {
     }
 
     pub fn multi_stream(&self) {
-        // use priority queue to oreder by time
+
+        let file_writer = FileWriter{file_path: String::from("output.json") };
+        // use priority queue to order by time
         let mut dfa_q: double_priority_queue::DoublePriorityQueue<DFA, u32> =
             double_priority_queue::DoublePriorityQueue::new();
 
@@ -35,7 +37,8 @@ impl StreamEngine {
             let pop = dfa_q.pop_min();
             if let Some((mut dfa, _)) = pop {
                 // process
-                println!("HB: {:?}", dfa.eval());
+                file_writer.write_records_to_file_append(dfa.eval()).expect("Write of HB record failed");
+                // println!("HB: {:?}", dfa.eval());
                 if !dfa.done() {
                     // update the dfa if its not done to calculate the time of next heartbeat
                     dfa.change();
