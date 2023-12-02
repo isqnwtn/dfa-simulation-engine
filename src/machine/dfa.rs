@@ -4,6 +4,7 @@ use rand::distributions::Alphanumeric;
 use rand::prelude::*;
 use std::char;
 use std::hash::{Hash, Hasher};
+use serde::{Serialize, Deserialize};
 
 #[derive(Clone, Debug)]
 pub struct DFA<'a> {
@@ -13,6 +14,13 @@ pub struct DFA<'a> {
     done: bool,
     session_id: String,
     rng: ThreadRng,
+}
+
+#[derive(Serialize, Deserialize, Debug,Clone)]
+pub struct HBRecord {
+    timestamp: u32,
+    session_id: String,
+    data: String
 }
 
 impl<'a> DFA<'a> {
@@ -54,18 +62,23 @@ impl<'a> StateMachine for DFA<'a> {
             }
         }
     }
-    fn eval(&self) -> Self::StateValue {
-        format!(
-            "timestamp:{} session:{} data:{}",
-            self.current_time, self.session_id, self.current_state
-        )
+
+    fn eval(&self) -> HBRecord {
+        return HBRecord {
+            timestamp: self.current_time,
+            session_id: self.session_id.clone(),
+            data: self.current_state.clone(),
+        }
     }
+
     fn time(&self) -> u32 {
         self.current_time
     }
+
     fn done(&self) -> bool {
         self.done
     }
+
     fn reset(&mut self) {
         self.current_state = self.machine.get_default_state();
         self.done = false;

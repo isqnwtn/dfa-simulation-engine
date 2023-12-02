@@ -1,4 +1,5 @@
 use std::fmt::Debug;
+use crate::machine::dfa::HBRecord;
 
 pub mod abstract_machine;
 pub mod dfa;
@@ -12,7 +13,7 @@ pub trait StateMachine {
     type StateValue: Debug;
     fn init(&mut self);
     fn change(&mut self);
-    fn eval(&self) -> Self::StateValue;
+    fn eval(&self) -> HBRecord;
     fn time(&self) -> u32;
     fn done(&self) -> bool;
     fn reset(&mut self);

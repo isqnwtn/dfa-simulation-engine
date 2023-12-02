@@ -6,6 +6,7 @@ use self::stream::StreamEngine;
 mod dsl;
 mod machine;
 mod stream;
+mod io;
 
 fn main() -> Result<(), rlua::Error> {
     // parse arguments
