@@ -23,7 +23,7 @@ impl StreamEngine {
 
     pub fn multi_stream(&self) {
 
-        let file_writer = FileWriter{file_path: String::from("output.json") };
+        let file_writer = FileWriter::new("output.json",true).expect("Failed while initializing File Writer");
         // use priority queue to order by time
         let mut dfa_q: double_priority_queue::DoublePriorityQueue<DFA, u32> =
             double_priority_queue::DoublePriorityQueue::new();
