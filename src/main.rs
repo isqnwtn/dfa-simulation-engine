@@ -17,7 +17,7 @@ fn main() -> Result<(), rlua::Error> {
     let machine = dsl.read_machine()?;
     let globals = dsl.read_globals()?;
     let global_state = dsl.create_global_state()?;
-    let stream_engine = StreamEngine::new(globals,global_state,machine);
+    let mut stream_engine = StreamEngine::new(globals,global_state,machine);
     stream_engine.multi_stream();
 
     //running stream

@@ -19,7 +19,7 @@ impl StreamEngine {
         StreamEngine { globals: g, state: s, abstract_machine: a }
     }
 
-    pub fn multi_stream(&self) {
+    pub fn multi_stream(&mut self) {
         // use priority queue to oreder by time
         let mut dfa_q: double_priority_queue::DoublePriorityQueue<DFA, u32> =
             double_priority_queue::DoublePriorityQueue::new();
@@ -37,7 +37,8 @@ impl StreamEngine {
             let pop = dfa_q.pop_min();
             if let Some((mut dfa, _)) = pop {
                 // process
-                println!("HB: {:?}", dfa.eval());
+                let session_count = self.state.run_session_manager(last_recorded_time).unwrap();
+                println!("max sessions:{} - HB: {:?}", session_count, dfa.eval());
                 if !dfa.done() {
                     // update the dfa if its not done to calculate the time of next heartbeat
                     dfa.change();
