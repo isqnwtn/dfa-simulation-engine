@@ -1,20 +1,22 @@
 pub mod globals;
+//pub mod session;
 
 use crate::machine::abstract_machine::AbstractMachine;
 use crate::machine::dfa::DFA;
 use crate::machine::StateMachine;
 use priority_queue::double_priority_queue;
 
-use self::globals::Globals;
+use self::globals::{Globals, GlobalState};
 
 pub struct StreamEngine {
     globals: Globals,
-    abstract_machine: AbstractMachine
+    state: GlobalState,
+    abstract_machine: AbstractMachine,
 }
 
 impl StreamEngine {
-    pub fn new(g: Globals, a: AbstractMachine) -> Self {
-        StreamEngine { globals: g, abstract_machine: a }
+    pub fn new(g: Globals, s: GlobalState, a: AbstractMachine) -> Self {
+        StreamEngine { globals: g, state: s, abstract_machine: a }
     }
 
     pub fn multi_stream(&self) {
@@ -29,7 +31,7 @@ impl StreamEngine {
         }
 
         let mut last_recorded_time = 0;
-        for _ in 0..(self.globals.run_length * self.globals.max_sessions) {
+        for _ in 0..self.globals.run_length {
             // pop the dfa which has the nearest heartbeat
             // popping will remove the item, only push it back if the DFA is not done
             let pop = dfa_q.pop_min();

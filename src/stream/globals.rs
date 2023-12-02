@@ -1,4 +1,4 @@
-use rlua::Function;
+use rlua::{Function, Lua};
 
 pub struct Globals{
     pub max_sessions: usize,
@@ -14,6 +14,12 @@ impl Globals{
     }
 }
 
-pub struct GlobalState<'a> {
-    session_manager: Function<'a>,
+pub struct GlobalState {
+    state_lua: Lua
+}
+
+impl GlobalState {
+    pub fn new(l:Lua) -> Self {
+        GlobalState { state_lua: l }
+    }
 }

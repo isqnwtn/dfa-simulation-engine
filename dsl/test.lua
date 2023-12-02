@@ -1,6 +1,6 @@
 GLOBAL = {
   max_sessions = 3,
-  run_length = 20,
+  run_length = 60,
   session_manager = function (t)
    if 0 < t < 1000 then
       return {session_count = 2}

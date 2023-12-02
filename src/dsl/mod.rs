@@ -5,7 +5,7 @@ pub mod reader;
 use std::fs;
 
 use crate::machine::abstract_machine::AbstractMachine;
-use crate::stream::globals::{Globals, self};
+use crate::stream::globals::{Globals, self, GlobalState};
 
 pub struct DSL {
     dsl: String,
@@ -19,14 +19,18 @@ impl DSL {
         }
     }
     pub fn read_machine(&self) -> Result<AbstractMachine, rlua::Error>{
-        let mut reader = reader::Reader::new(&self.dsl);
+        let mut reader = reader::Reader::new(&self.dsl)?;
         let machine = reader.read_machine()?;
         Ok(machine)
     }
     pub fn read_globals(&self) -> Result<Globals, rlua::Error> {
-        let mut reader = reader::Reader::new(&self.dsl);
+        let mut reader = reader::Reader::new(&self.dsl)?;
         let globals = reader.read_globals()?;
         Ok(globals)
+    }
+    pub fn create_global_state(&self) -> Result<GlobalState, rlua::Error> {
+        let reader = reader::Reader::new(&self.dsl)?;
+        reader.create_global_state()
     }
 }
 
