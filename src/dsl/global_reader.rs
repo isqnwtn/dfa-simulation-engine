@@ -14,6 +14,7 @@ impl<'a> GlobalReader<'a> {
     pub fn read_globals(&mut self) -> Result<globals::Globals, Error> {
         let max_sessions = self.global_table.get::<&str,usize>("max_sessions")?;
         let run_length = self.global_table.get::<&str,usize>("run_length")?;
-        Ok(Globals::new(max_sessions, run_length))
+        let hb_interval = self.global_table.get::<&str, u32>("hb_interval")?;
+        Ok(Globals::new(max_sessions, run_length, hb_interval))
     }
 }

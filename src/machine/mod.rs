@@ -17,4 +17,7 @@ pub trait StateMachine {
     fn time(&self) -> u32;
     fn done(&self) -> bool;
     fn reset(&mut self);
+    fn is_next_state_computed(&self) -> bool;
+    fn set_is_next_state_computed(&mut self, flag:bool);
+    fn set_current_time(&mut self, ct: u32);
 }

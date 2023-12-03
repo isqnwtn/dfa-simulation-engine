@@ -3,13 +3,15 @@ use rlua::{Function, Lua, Error, Table};
 pub struct Globals{
     pub max_sessions: usize,
     pub run_length: usize,
+    pub hb_interval: u32,
 }
 
 impl Globals{
-    pub fn new(m:usize,r:usize) -> Self{
+    pub fn new(m:usize,r:usize,h:u32) -> Self{
         Globals{
             max_sessions: m,
             run_length: r,
+            hb_interval: h,
         }
     }
 }
