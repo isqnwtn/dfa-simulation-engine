@@ -44,11 +44,25 @@ impl StreamEngine {
                 file_writer.write_records_to_file_append(dfa.eval()).expect("Write of HB record failed");
                 // println!("HB: {:?}", dfa.eval());
                 if !dfa.done() {
-                    // update the dfa if its not done to calculate the time of next heartbeat
-                    dfa.change();
-                    let new_time = dfa.time();
-                    last_recorded_time = new_time;
-                    dfa_q.push(dfa, new_time);
+                    if !dfa.is_next_state_computed(){
+                        let mut current_time = dfa.time();
+                        let prev_dfa = dfa.clone();
+                        // update the dfa if its not done to calculate the time of next heartbeat
+                        dfa.change();
+                        let new_time = dfa.time();
+                        last_recorded_time = new_time;
+                        // if the state change occurs before the hb interval
+                        // state change event must be sent
+                        // else store the new dfa, send the regular hb and later send the state change hb
+                        while new_time > current_time + self.globals.hb_interval {
+                            current_time += self.globals.hb_interval;
+                            let mut current_dfa = prev_dfa.clone();
+                            current_dfa.set_current_time(current_time);
+                            current_dfa.set_is_next_state_computed(true);
+                            dfa_q.push(current_dfa,current_time);
+                        }
+                        dfa_q.push(dfa, new_time);
+                    }
                 } else {
                     // if it's done create a new dfa and add it to the queue
                     // this maintains the total active sessions at a const which is given by `self.globals.max_sessions`

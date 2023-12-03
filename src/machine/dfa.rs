@@ -14,6 +14,7 @@ pub struct DFA<'a> {
     done: bool,
     session_id: String,
     rng: ThreadRng,
+    is_next_state_computed: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug,Clone)]
@@ -38,6 +39,7 @@ impl<'a> DFA<'a> {
             current_time: start_time,
             done: false,
             rng: rand::thread_rng(),
+            is_next_state_computed : false,
         }
     }
 }
@@ -84,11 +86,25 @@ impl<'a> StateMachine for DFA<'a> {
         self.done = false;
         self.current_time = 0;
     }
+
+    #[inline]
+    fn is_next_state_computed(&self) -> bool {
+        self.is_next_state_computed
+    }
+
+    #[inline]
+    fn set_is_next_state_computed(&mut self, flag:bool) {
+        self.is_next_state_computed = flag;
+    }
+
+    fn set_current_time(&mut self, ct: u32) {
+        self.current_time = ct
+    }
 }
 
 impl PartialEq for DFA<'_> {
     fn eq(&self, other: &Self) -> bool {
-        self.session_id == other.session_id
+        self.session_id == other.session_id && self.current_time == other.current_time
     }
 }
 
@@ -96,6 +112,7 @@ impl Eq for DFA<'_> {}
 
 impl Hash for DFA<'_> {
     fn hash<H: Hasher>(&self, state: &mut H) {
-        self.session_id.hash(state)
+        self.session_id.hash(state);
+        self.current_time.hash(state)
     }
 }
