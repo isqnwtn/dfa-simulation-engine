@@ -21,7 +21,6 @@ pub struct DFA<'a> {
 pub struct HBRecord {
     timestamp: u32,
     session_id: String,
-    is_state_change_computed: bool,
     data: String
 }
 
@@ -70,7 +69,6 @@ impl<'a> StateMachine for DFA<'a> {
         return HBRecord {
             timestamp: self.current_time,
             session_id: self.session_id.clone(),
-            is_state_change_computed: self.is_next_state_computed,
             data: self.current_state.clone(),
         }
     }
