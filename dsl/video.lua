@@ -12,9 +12,7 @@ end
 
 GLOBAL = {
   max_sessions = 3,
-  run_length = 100,
-  hb_interval = 30,
-
+  run_length = 60,
 }
 
 MACHINE = {
