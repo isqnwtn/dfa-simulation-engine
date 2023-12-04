@@ -1,5 +1,6 @@
 -- First test example for simulating a video player
 
+-- experimental stuff
 function SESSION_MANAGER(t)
   if 0 < t and t < 1000 then
       return 2
@@ -12,8 +13,10 @@ end
 
 GLOBAL = {
   max_sessions = 3,
-  run_length = 60,
+  run_length = 10000,
+  hb_interval = 30,
 }
+
 
 MACHINE = {
   {
@@ -40,3 +43,4 @@ MACHINE = {
     final = true,
   }
 }
+

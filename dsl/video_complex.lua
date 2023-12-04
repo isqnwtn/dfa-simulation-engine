@@ -1,7 +1,11 @@
--- First test example for simulating a video player
+-- NOTE: Some of the functionalities mentioned here are still wip, at present we can handle 
+-- state changes based on probability, future plans involves evaluation of functions that 
+-- determine and modify the probability distribution of transitions from each state.
+--
 GLOBAL = {
   max_sessions = 3,
   run_length = 60,
+  hb_interval = 30,
 }
 
 GLOBAL_STATE = {

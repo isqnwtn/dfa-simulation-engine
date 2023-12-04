@@ -1,18 +1,8 @@
--- First test example for simulating a video player
-
-function SESSION_MANAGER(t)
-  if 0 < t and t < 1000 then
-      return 2
-   elseif 1000 < t and t < 2000 then
-      return 5
-    else
-      return 1
-   end
-end
-
+-- test example for simulating a taxi booking app
 GLOBAL = {
   max_sessions = 3,
-  run_length = 2000,
+  run_length = 10000,
+  hb_interval = 30,
 }
 
 MACHINE = {
@@ -148,3 +138,16 @@ MACHINE = {
   }
 
 }
+
+-- experimental stuff
+function SESSION_MANAGER(t)
+  if 0 < t and t < 1000 then
+      return 2
+   elseif 1000 < t and t < 2000 then
+      return 5
+    else
+      return 1
+   end
+end
+
+
