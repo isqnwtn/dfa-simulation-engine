@@ -10,7 +10,8 @@ GLOBAL = {
 
 GLOBAL_STATE = {
   some_global_state_data = "something",
-  sessions_in_rollup = 5
+  sessions_in_rollup = 5,
+  buffering_chance = 10
 }
 
 function GLOBAL_STATE_MANAGER(time,st)
@@ -46,11 +47,11 @@ MACHINE = {
       probs = {buffering = 10,paused = 30, stopped= 10, playing=50},
       waitTime = 300,
       waitSpread = 50,
-      updateFunction = function (time,machine_meta,machine_vars,_global_state)
+      updateFunction = function (time,machine_meta,machine_vars,global_state)
         local new_runtime = time - machine_meta.start_time
         machine_vars.runtime = new_runtime
         local new_probs = {
-          buffering = 10,
+          buffering = 10+5*global_state.buffering_chance,
           paused = 30,
           stopped = 10 + 80*(new_runtime/machine_vars.max_runtime),
           playing = 50 - 45*(new_runtime/machine_vars.max_runtime)

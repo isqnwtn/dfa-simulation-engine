@@ -1,4 +1,4 @@
--- test example for simulating a taxi booking app
+-- test example for simulating a cab booking app
 GLOBAL = {
   max_sessions = 3,
   run_length = 10000,
